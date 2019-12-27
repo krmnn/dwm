@@ -30,7 +30,17 @@ static const char *colors[][6]      = {
 };
 
 /* tagging */
-static const char *tags[] = { "web¹", "mail²", "cal³", "chat4", "dev5", "ssh6" };
+/*
+ * 1 web: browse the interwebs, read articles
+ * 2 mail: firefox with gmail 
+ * 3 cal: firefox with gmail 
+ * 4 chat: firefox with gmail 
+ * 5 docu: firefox with documentation/confluence 
+ * 6 dev: $n termite terminals in tile layout, vim for programming, git + ci pipelines for devops tasks
+ * 7 ssh: $n termite terminals with remote sessions, manually managing machines
+ * 8 spare
+ */
+static const char *tags[] = { "1 web", "2 mail", "3 chat", "4 cal", "5 docu", "6 dev", "7remote" };
 
 static const Rule rules[] = {
     /* xprop(1):
@@ -43,10 +53,10 @@ static const Rule rules[] = {
     { "Firefox",     NULL,       NULL,       1 << 0,       0,           -1 },
     { "thunderbird", NULL,       NULL,       1 << 1,       0,           -1 },
     { "gmail",       NULL,       NULL,       1 << 1,       0,           -1 },
-    { "chat",        NULL,       NULL,       1 << 3,       0,           -1 },
-    { "Discord",     NULL,       NULL,       1 << 3,       0,           -1 },
-    { "Termite",     NULL,       NULL,       1 << 4,       0,           -1 },
-    { "ssh",         NULL,       NULL,       1 << 5,       0,           -1 },
+    { "chat",        NULL,       NULL,       1 << 2,       0,           -1 },
+    { "Discord",     NULL,       NULL,       1 << 2,       0,           -1 },
+    //{ "Termite",     NULL,       NULL,       1 << 4,       0,           -1 },
+    { "ssh",         NULL,       NULL,       1 << 6,       0,           -1 },
 };
 
 /* layout(s) */
@@ -59,15 +69,17 @@ static const Layout layouts[] = {
     { "[t]",      tile },    /* first entry is default */
     { "[m]",      monocle },
     { "[f]",      NULL },    /* no layout function means floating behavior */
+    { NULL,      NULL },    /* no layout function means floating behavior */
 };
 
 /* key definitions */
 #define MODKEY Mod1Mask
+#define WINKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
-{ MODKEY,                            KEY,      view,           {.ui = 1 << TAG} }, \
 { 0,                  KEY,      toggleview,     {.ui = 1 << TAG} }, \
-{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
-{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
+{ MODKEY,             KEY,      view,           {.ui = 1 << TAG} }, \
+{ WINKEY,             KEY,      tag,            {.ui = 1 << TAG} }, \
+//{ WINKEY,             KEY,      toggletag,      {.ui = 1 << TAG} },
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
@@ -80,36 +92,44 @@ static const char *termcmd[]  = { "termite", NULL };
 
 static Key keys[] = {
     /* modifier                     key        function        argument */
-    { 0,                            XK_F9,     spawn,          {.v = termcmd } },
-    { 0,                            XK_F10,    spawn,          {.v = dmenucmd } },
-    //{ MODKEY,                       XK_b,      togglebar,      {0} },
-    { MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
-    { MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
-    { MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
-    { MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
-    //{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
-    //{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-    { MODKEY,                       XK_Return, zoom,           {0} },
-    { 0,                            XK_F12,    view,           {0} }, // last view
-    { 0,                            XK_End,     killclient,     {0} },
-    //{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
-    //{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
-    //{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
-    { MODKEY,                       XK_space,  setlayout,      {0} },
-    //{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
-    { MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-    { MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
-    { MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
-    { MODKEY,                       XK_period, focusmon,       {.i = +1 } },
-    { MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
-    { MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
     TAGKEYS(                        XK_F1,                      0)
     TAGKEYS(                        XK_F2,                      1)
     TAGKEYS(                        XK_F3,                      2)
     TAGKEYS(                        XK_F4,                      3)
     TAGKEYS(                        XK_F5,                      4)
     TAGKEYS(                        XK_F6,                      5)
+    TAGKEYS(                        XK_F7,                      6)
+    TAGKEYS(                        XK_F8,                      7)
+    { 0,                            XK_F9,     spawn,          {.v = termcmd } },
+    { 0,                            XK_F10,    spawn,          {.v = dmenucmd } },
+    { 0,                            XK_F12,    view,           {0} }, // last view
+    // focus & zoom & kill clients
+    { MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
+    { MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
+    { MODKEY,                       XK_space,   zoom,           {0} },
+    { 0,                            XK_End,    killclient,     {0} },
+    // layout
+    { 0,                            XK_Home,  setlayout,      {0} },
+    { MODKEY,                       XK_Home,  togglefloating, {0} },
+    // master area
+    { MODKEY,                       XK_period,      incnmaster,     {.i = +1 } },
+    { MODKEY,                       XK_comma,      incnmaster,     {.i = -1 } },
+    // xinerama / multihead setups / presentations
+    //{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
+    //{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
+    //{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
+    //{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
+    // dwm
     { MODKEY,                       XK_q,      quit,           {0} },
+    // disabled
+    //{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
+    //{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
+    //{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
+    //{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
+    //{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
+    //{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
+    //{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
+    //{ MODKEY,                       XK_b,      togglebar,      {0} },
 };
 
 /* button definitions */
