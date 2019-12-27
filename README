@@ -1,6 +1,30 @@
 dwm - dynamic window manager
 ============================
-dwm is an extremely fast, small, and dynamic window manager for X.
+
+my configuration of dwm, an extremely fast, small, and dynamic window manager for X.
+
+this is an attempt to combine the ideas of dynamic tiling window management with the ux/ergonomic considerations of the infamous "why tiling window managers suck" [rant](http://xahlee.info/linux/why_tiling_window_manager_sucks.html).
+
+
+Objectives: simple, ergonomic, reasonable
+
+Goals:
+
+- Use more of a tagging approach instead of abusing tags as traditional workspaces
+- Get rid of key chords
+  - Remove modifiers for most used actions. Use F1-12 keys instead.
+  - Maybe keep vim-style keybindings for moving and orientation
+  - Switch to sticky keys/key sequences wherever not possible to completely remove modifier
+  - Use only thumbs for modifiers, never use the pinkys!
+- Automate my most used actions and workflows
+  - tag all relevant clients automatically, handle popups and floating clients correctly
+  - predefined layouts 
+  - functions to superimpose browser or mail client into current tag
+- Practical
+  - provide systray so we can out-source wifi/bluetooth/volume management and not fiddle with shellscripts
+  - include all patches that deal with broken software 
+- Distinctive, easy-to-read colorscheme based on Tango color palette
+- One-click install: status script and xsession launch script included
 
 
 Requirements
