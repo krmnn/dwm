@@ -40,7 +40,7 @@ static const char *colors[][6]      = {
  * 7 ssh: $n termite terminals with remote sessions, manually managing machines
  * 8 spare
  */
-static const char *tags[] = { "1 web", "2 mail", "3 chat", "4 cal", "5 docu", "6 dev", "7remote" };
+static const char *tags[] = { "1 web", "2 mail", "3 chat", "4 cal", "5 docu", "6 dev", "7 remote", "8 misc" };
 
 static const Rule rules[] = {
     /* xprop(1):
@@ -109,7 +109,8 @@ static Key keys[] = {
     { MODKEY,                       XK_space,   zoom,           {0} },
     { 0,                            XK_End,    killclient,     {0} },
     // layout
-    { 0,                            XK_Home,  setlayout,      {0} },
+    //{ 0,                            XK_Home,  setlayout,      {0} },
+	{ 0,                            XK_Home,  cyclelayout,    {.i = +1 } },
     { MODKEY,                       XK_Home,  togglefloating, {0} },
     // master area
     { MODKEY,                       XK_period,      incnmaster,     {.i = +1 } },
