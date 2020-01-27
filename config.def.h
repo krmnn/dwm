@@ -52,6 +52,7 @@ static const Rule rules[] = {
     { NULL,          NULL,       "Save As",  0,            1,           -1 },
     { "Firefox",     NULL,       NULL,       1 << 0,       0,           -1 },
     { "thunderbird", NULL,       NULL,       1 << 1,       0,           -1 },
+    { "Thunderbird", NULL,       NULL,       1 << 1,       0,           -1 },
     { "gmail",       NULL,       NULL,       1 << 1,       0,           -1 },
     { "chat",        NULL,       NULL,       1 << 2,       0,           -1 },
     { "Discord",     NULL,       NULL,       1 << 2,       0,           -1 },
