@@ -89,7 +89,9 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 //static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *dmenucmd[] = { "rofi", "-show", "run", NULL };
+static const char *passcmd[] = { "rofi-gopass", NULL };
 static const char *termcmd[]  = { "termite", NULL };
+static const char *lockcmd[]  = { "i3-lock", NULL };
 
 static Key keys[] = {
     /* modifier                     key        function        argument */
@@ -103,35 +105,37 @@ static Key keys[] = {
     TAGKEYS(                        XK_F8,                      7)
     { 0,                            XK_F9,     spawn,          {.v = termcmd } },
     { 0,                            XK_F10,    spawn,          {.v = dmenucmd } },
-    { 0,                            XK_F12,    view,           {0} }, // last view
+    { 0,                            XK_F11,    spawn,          {.v = passcmd } },
+    { 0,                            XK_F12,    spawn,          {.v = lockcmd } },
+    { MODKEY,                       XK_BackSpace,    view,           {0} }, // last view
     // focus & zoom & kill clients
     { MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
     { MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
-    { MODKEY,                       XK_space,   zoom,           {0} },
-    { 0,                            XK_End,    killclient,     {0} },
+    { MODKEY,                       XK_space,  zoom,           {0} },
+    { MODKEY,                       XK_End,    killclient,     {0} },
     // layout
-    //{ 0,                            XK_Home,  setlayout,      {0} },
-	{ 0,                            XK_Home,  cyclelayout,    {.i = +1 } },
-    { MODKEY,                       XK_Home,  togglefloating, {0} },
+    //{ 0,                          XK_Home,   setlayout,      {0} },
+	{ 0,                            XK_Home,   cyclelayout,    {.i = +1 } },
+    { MODKEY,                       XK_Home,   togglefloating, {0} },
     // master area
-    { MODKEY,                       XK_period,      incnmaster,     {.i = +1 } },
-    { MODKEY,                       XK_comma,      incnmaster,     {.i = -1 } },
-    // xinerama / multihead setups / presentations
-    //{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
-    //{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
-    //{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
-    //{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
+    { MODKEY,                       XK_period, incnmaster,     {.i = +1 } },
+    { MODKEY,                       XK_comma,  incnmaster,     {.i = -1 } },
+    // xinerama
+    //{ MODKEY,                     XK_comma,  focusmon,       {.i = -1 } },
+    //{ MODKEY,                     XK_period, focusmon,       {.i = +1 } },
+    //{ MODKEY|ShiftMask,           XK_comma,  tagmon,         {.i = -1 } },
+    //{ MODKEY|ShiftMask,           XK_period, tagmon,         {.i = +1 } },
     // dwm
     { MODKEY,                       XK_q,      quit,           {0} },
     // disabled
-    //{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-    //{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
-    //{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
-    //{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-    //{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
-    //{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
-    //{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
-    //{ MODKEY,                       XK_b,      togglebar,      {0} },
+    //{ MODKEY,                     XK_0,      view,           {.ui = ~0 } },
+    //{ MODKEY|ShiftMask,           XK_0,      tag,            {.ui = ~0 } },
+    //{ MODKEY,                     XK_h,      setmfact,       {.f = -0.05} },
+    //{ MODKEY,                     XK_l,      setmfact,       {.f = +0.05} },
+    //{ MODKEY,                     XK_t,      setlayout,      {.v = &layouts[0]} },
+    //{ MODKEY,                     XK_f,      setlayout,      {.v = &layouts[1]} },
+    //{ MODKEY,                     XK_m,      setlayout,      {.v = &layouts[2]} },
+    //{ MODKEY,                     XK_b,      togglebar,      {0} },
 };
 
 /* button definitions */
